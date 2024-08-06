@@ -3,4 +3,13 @@
     <string name="error_title">Ocurrio un error</string>
     <string name="try_again">Intentar de nuevo</string>
     <string name="error_generico">error generico</string>
+
+
+
+    <string name="unknown_host_exception_error">No hay connexion a internet</string>
+    <string name="wrong_user_or_password">Usuario o contraseña equivocado</string>
+    <string name="user_already_exists">Usuario existente</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="parameter_non_null_is_null">Parametro declarado como no nulo, es nulo</string>
+
 </resources>

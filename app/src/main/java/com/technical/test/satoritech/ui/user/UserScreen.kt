@@ -1,14 +1,13 @@
 package com.technical.test.satoritech.ui.user
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,29 +26,29 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.technical.test.satoritech.R
 import com.technical.test.satoritech.model.User
-import com.technical.test.satoritech.utils.alphabetCheck
 import com.technical.test.satoritech.utils.getInitials
 import com.technical.test.satoritech.utils.isLetters
 
 @Composable
 fun UserScreen(
-    user: User
+    user: User,
+    onClickProfile: () -> Unit,
 ) {
     Box(
         modifier = Modifier
-            .size(150.dp),
+            .size(50.dp),
         contentAlignment = Alignment.Center
     ) {
-        if(user.urlImage.isNullOrEmpty()){
-            ShowInitials(user.name)
+        if (user.urlImage.isNullOrEmpty()) {
+            ShowInitials(user.name, onClickProfile)
         } else {
-            ShowImage(user)
+            ShowImage(user, onClickProfile)
         }
     }
 }
 
 @Composable
-fun ShowPlaceholder() {
+fun ShowPlaceholder(onClickProfile: () -> Unit) {
     Image(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,10 +56,11 @@ fun ShowPlaceholder() {
         painter = painterResource(id = R.drawable.placeholder),
         contentScale = ContentScale.FillWidth,
         contentDescription = null,
-    )}
+    )
+}
 
 @Composable
-fun ShowImage(user: User) {
+fun ShowImage(user: User, onClickProfile: () -> Unit) {
     SubcomposeAsyncImage(
         modifier = Modifier.clip(CircleShape),
         model = user.urlImage,
@@ -69,13 +69,18 @@ fun ShowImage(user: User) {
     ) {
         val state = painter.state
         if (state is AsyncImagePainter.State.Error) {
-            if (user.name.isNullOrEmpty()){
-                ShowPlaceholder()
+            if (user.name.isNullOrEmpty()) {
+                ShowPlaceholder(onClickProfile)
             } else {
-                ShowInitials(name = user.name)
+                ShowInitials(name = user.name, onClickProfile)
             }
         } else {
             SubcomposeAsyncImageContent(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable {
+                        onClickProfile()
+                    },
                 contentScale = ContentScale.Inside
             )
         }
@@ -83,7 +88,7 @@ fun ShowImage(user: User) {
 }
 
 @Composable
-fun ShowInitials(name: String) {
+fun ShowInitials(name: String, onClickProfile: () -> Unit) {
     if (name.isLetters()) {
         Text(
             modifier = Modifier
@@ -93,12 +98,15 @@ fun ShowInitials(name: String) {
                         color = Color.Green,
                         radius = size.maxDimension
                     )
+                }
+                .clickable {
+                    onClickProfile()
                 },
             text = name.getInitials(),
             style = TextStyle(color = Color.White, fontSize = 20.sp)
         )
     } else {
-        ShowPlaceholder()
+        ShowPlaceholder(onClickProfile)
     }
 }
 
@@ -106,5 +114,5 @@ fun ShowInitials(name: String) {
 @Composable
 @Preview(showBackground = true)
 private fun UserScreenPreview() {
-    UserScreen(user = User("Carlos Mauricio", ""))
+    UserScreen(user = User("Carlos Mauricio", ""), onClickProfile = {})
 }

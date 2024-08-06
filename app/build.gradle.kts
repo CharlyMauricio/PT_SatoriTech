@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -37,10 +40,11 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        dataBinding = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.9"
     }
     packaging {
         resources {
@@ -48,6 +52,7 @@ android {
         }
     }
 }
+
 
 dependencies {
 
@@ -71,4 +76,16 @@ dependencies {
     implementation ("androidx.compose.material:material:1.6.8")
     // Coil
     implementation ("io.coil-kt:coil-compose:2.1.0")
+    // Retrofit y Moshi
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    // Dependency Injection with Hilt
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+}
+
+kapt {
+    correctErrorTypes = true
 }

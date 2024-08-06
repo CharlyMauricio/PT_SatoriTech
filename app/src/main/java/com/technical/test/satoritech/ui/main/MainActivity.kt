@@ -21,9 +21,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setObserver()
+
         setContent {
             SatoriTechTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -43,14 +43,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setObserver() = with(viewModel) {
-        status.observe(this@MainActivity){
-            if (it is ApiResponseStatus.Error) {
-                println("esto responde el handleResponseStatus " + getString(it.messageId) )
-            }
-        }
 
-        pokemonList.observe(this@MainActivity){
-            println("esto regresa el pokemonList " + it)
-        }
     }
 }

@@ -1,17 +1,18 @@
 package com.technical.test.satoritech.ui.main
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.technical.test.satoritech.api.repositories.tasks.PokemonTasks
 import com.technical.test.satoritech.api.utils.ApiResponseStatus
+import com.technical.test.satoritech.model.PokemonData
 import com.technical.test.satoritech.model.PokemonList
+import com.technical.test.satoritech.utils.getIdPokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+@Suppress("UNCHECKED_CAST")
 @HiltViewModel
 class MainViewModel
 @Inject
@@ -19,32 +20,56 @@ constructor(
     private val pokemonRepository: PokemonTasks,
 ): ViewModel() {
 
-//    var status = mutableStateOf<ApiResponseStatus<Any>?>(null)
-//        private set
+    var status = mutableStateOf<ApiResponseStatus<Any>?>(null)
+        private set
 
-    private val _status = MutableLiveData<ApiResponseStatus<Any>>()
-    val status: LiveData<ApiResponseStatus<Any>>
-        get() = _status
-
-    private val _pokemonList = MutableLiveData<PokemonList>()
-    val pokemonList: LiveData<PokemonList>
-        get() = _pokemonList
+    var pokemonList = mutableStateOf<PokemonList?>(null)
+        private set
 
     init {
-        getPokemonList()
+        getPokemonList("0","25")
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<PokemonList>) {
+/*
+    private fun <T> handleResponseStatus(apiResponseStatus: ApiResponseStatus<>) {
         if (apiResponseStatus is ApiResponseStatus.Success) {
-            _pokemonList.value = apiResponseStatus.data!!
+            if (apiResponseStatus.data is PokemonList){
+                apiResponseStatus.data.listPokemon.forEach {
+                    getPokemon(it.urlDataPokemon.getIdPokemon())
+                }
+            }
         }
-        _status.value = apiResponseStatus as ApiResponseStatus<Any>
+        status.value = apiResponseStatus as ApiResponseStatus<Any>
     }
-    private fun getPokemonList(){
+*/
+
+    private fun handlePokemonList(apiResponseStatus: ApiResponseStatus<PokemonList>) {
+        if (apiResponseStatus is ApiResponseStatus.Success) {
+            getPokemon("1")
+            /*apiResponseStatus.data.listPokemon.forEach {
+                getPokemon(it.urlDataPokemon.getIdPokemon())
+            }*/
+        }
+        status.value = apiResponseStatus as ApiResponseStatus<Any>
+    }
+
+    private fun handlePokemonData(apiResponseStatus: ApiResponseStatus<PokemonData>) {
+        if (apiResponseStatus is ApiResponseStatus.Success) {
+
+        }
+        status.value = apiResponseStatus as ApiResponseStatus<Any>
+    }
+
+    private fun getPokemonList(pageMin: String, pageMax: String){
         viewModelScope.launch {
-            _status.value = ApiResponseStatus.Loading()
-            handleResponseStatus(pokemonRepository.getPokemonList())
+            status.value = ApiResponseStatus.Loading()
+            handlePokemonList(pokemonRepository.getPokemonList(pageMin, pageMax))
+        }
+    }
+
+    private fun getPokemon(idPokemon: String){
+        viewModelScope.launch {
+            handlePokemonData(pokemonRepository.getPokemon(idPokemon))
         }
     }
 }

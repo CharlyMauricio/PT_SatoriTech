@@ -12,15 +12,15 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Loading() {
+fun LoadingScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .semantics { testTag = "loading-wheel" },
+            .semantics { testTag = "loading-screen" },
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            color = Color.Red
+            color = Color.Blue
         )
     }
 }
@@ -28,5 +28,5 @@ fun Loading() {
 @Composable
 @Preview(showBackground = true)
 private fun LoadingPreview(){
-    Loading()
+    LoadingScreen()
 }

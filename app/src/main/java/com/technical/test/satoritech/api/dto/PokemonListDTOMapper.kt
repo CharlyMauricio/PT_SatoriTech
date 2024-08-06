@@ -6,7 +6,6 @@ import com.technical.test.satoritech.model.Pokemon
 import com.technical.test.satoritech.model.PokemonList
 
 class PokemonListDTOMapper {
-
     fun fromPokemonListDTOToPokemonListDomain(pokemonListDTO: PokemonListResponse): PokemonList {
         return PokemonList(
             pokemonListDTO.count,
@@ -26,4 +25,5 @@ class PokemonListDTOMapper {
             pokemonDTO.urlDataPokemon
         )
     }
+
 }

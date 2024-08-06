@@ -11,5 +11,6 @@
     <string name="user_already_exists">Usuario existente</string>
     <string name="unknown_error">Error desconocido</string>
     <string name="parameter_non_null_is_null">Parametro declarado como no nulo, es nulo</string>
+    <string name="name_app">Prueba tecnica para SatoriTech</string>
 
 </resources>

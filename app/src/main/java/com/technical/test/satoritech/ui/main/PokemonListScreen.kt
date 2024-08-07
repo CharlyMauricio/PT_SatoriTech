@@ -23,10 +23,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -36,12 +34,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberAsyncImagePainter
-import com.technical.test.satoritech.R
 import com.technical.test.satoritech.api.utils.ApiResponseStatus
 import com.technical.test.satoritech.model.PokemonData
-import com.technical.test.satoritech.ui.utils.BackNavigationIcon
+import com.technical.test.satoritech.model.User
 import com.technical.test.satoritech.ui.utils.ErrorDialog
 import com.technical.test.satoritech.ui.utils.LoadingScreen
+import com.technical.test.satoritech.ui.utils.TopBarNavigation
 import com.technical.test.satoritech.utils.getInitials
 
 private const val GRID_SPAN_COUNT = 1
@@ -50,7 +48,9 @@ private const val GRID_SPAN_COUNT = 1
 @ExperimentalMaterialApi
 @Composable
 fun PokemonListScreen(
-    onNavigationIconClick: () -> Unit,
+    user: User,
+    onBackClick: () -> Unit,
+    onClickUserProfile: () -> Unit,
     onPokemonClicked: (PokemonData) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
@@ -58,7 +58,11 @@ fun PokemonListScreen(
     val pokemonList = viewModel.pokemonDataList.collectAsState().value
 
     Scaffold(
-        topBar = { DogListScreenTopBar(onNavigationIconClick) }
+        topBar = { ScreenTopBar(
+            user,
+            onBackClick,
+            onClickUserProfile
+        ) }
     ) {
         LazyVerticalGrid(
             contentPadding = it,
@@ -83,14 +87,19 @@ fun PokemonListScreen(
 }
 
 @Composable
-fun DogListScreenTopBar(
-    onClick: () -> Unit
+fun ScreenTopBar(
+    user: User,
+    onClick: () -> Unit,
+    onClickUserProfile: () -> Unit,
 ) {
     TopAppBar(
-        title = { Text(stringResource(R.string.name_app)) },
+        title = { TopBarNavigation(
+            user,
+            onClick,
+            onClickUserProfile
+        ) },
         backgroundColor = Color.White,
-        contentColor = Color.Black,
-        navigationIcon = { BackNavigationIcon(onClick) }
+        contentColor = Color.Black
     )
 }
 

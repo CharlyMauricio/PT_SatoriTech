@@ -1,33 +1,39 @@
 package com.technical.test.satoritech.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
 import coil.annotation.ExperimentalCoilApi
 import com.technical.test.satoritech.model.User
 import com.technical.test.satoritech.ui.theme.SatoriTechTheme
-import com.technical.test.satoritech.ui.user.UserScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SatoriTechTheme {
+                val userData = remember {
+                    User(
+                        "Carlos Mauricio",
+                        ""
+                    )
+                }
                 PokemonListScreen(
-                    onNavigationIconClick = { /*TODO*/ },
-                    onPokemonClicked = {}
+                    user = userData,
+                    onBackClick = { finish() },
+                    onClickUserProfile = {
+                        Log.d("TESTER", "onClickUserProfile")
+                    },
+                    onPokemonClicked = {
+                        Log.d("TESTER", "onPokemonClicked")
+                    }
                 )
             }
         }

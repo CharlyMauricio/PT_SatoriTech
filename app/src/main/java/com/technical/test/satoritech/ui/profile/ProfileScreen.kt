@@ -1,11 +1,10 @@
-package com.technical.test.satoritech.ui.user
+package com.technical.test.satoritech.ui.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -92,7 +91,6 @@ fun ShowInitials(name: String, onClickProfile: () -> Unit) {
     if (name.isLetters()) {
         Text(
             modifier = Modifier
-                .padding(16.dp)
                 .drawBehind {
                     drawCircle(
                         color = Color.Green,
@@ -103,7 +101,7 @@ fun ShowInitials(name: String, onClickProfile: () -> Unit) {
                     onClickProfile()
                 },
             text = name.getInitials(),
-            style = TextStyle(color = Color.White, fontSize = 20.sp)
+            style = TextStyle(color = Color.White, fontSize = 15.sp)
         )
     } else {
         ShowPlaceholder(onClickProfile)

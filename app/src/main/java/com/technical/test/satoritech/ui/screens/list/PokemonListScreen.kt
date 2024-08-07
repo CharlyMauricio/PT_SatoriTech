@@ -1,5 +1,6 @@
 package com.technical.test.satoritech.ui.screens.list
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
@@ -20,7 +19,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,11 +35,14 @@ import com.technical.test.satoritech.api.utils.ApiResponseStatus
 import com.technical.test.satoritech.model.PokemonData
 import com.technical.test.satoritech.model.User
 import com.technical.test.satoritech.ui.screens.main.MainViewModel
+import com.technical.test.satoritech.ui.utils.composable.EndlessLazyColumn
 import com.technical.test.satoritech.ui.utils.composable.ErrorDialog
 import com.technical.test.satoritech.ui.utils.composable.LoadingScreen
 import com.technical.test.satoritech.ui.utils.composable.TopBarNavigation
 import com.technical.test.satoritech.ui.utils.firstCharUpperCase
 import com.technical.test.satoritech.ui.utils.getInitials
+
+private val buffer = 1
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -55,9 +56,7 @@ fun PokemonListScreen(
 ) {
     val status = viewModel.status.value
     val pokemonList = viewModel.pokemonDataList.collectAsState().value
-    var isLastItemPokemon = remember {
-        false
-    }
+
     Scaffold(
         topBar = {
             ScreenTopBar(
@@ -67,21 +66,16 @@ fun PokemonListScreen(
             )
         }
     ) {
-        LazyColumn(
-            contentPadding = it,
-        ) {
-            itemsIndexed(pokemonList) { index, pokemon ->
-                if ((index + 1) == pokemonList.size) {
-                    isLastItemPokemon = true
-                }
-                if (isLastItemPokemon) {
-                    val pageInitial = (index + 2).toString()
-                    //viewModel.getPokemonList(pageInitial)
-                } else {
-                    PokemonGridItem(pokemon, onPokemonClicked)
-                }
+        EndlessLazyColumn(
+            modifier = Modifier.padding(it),
+            items = pokemonList,
+            itemContent = { pokemon ->
+                PokemonGridItem(pokemon, onPokemonClicked)
+            },
+            loadMore = {
+                viewModel.getPokemonList(pokemonList.size.toString())
             }
-        }
+        )
     }
 
     when (status) {

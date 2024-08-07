@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.technical.test.satoritech.api.repositories.tasks.PokemonTasks
 import com.technical.test.satoritech.api.utils.ApiResponseStatus
 import com.technical.test.satoritech.model.Pages
+import com.technical.test.satoritech.model.Pokemon
 import com.technical.test.satoritech.model.PokemonData
 import com.technical.test.satoritech.model.PokemonList
 import com.technical.test.satoritech.room.entity.PokemonEntityDB
 import com.technical.test.satoritech.room.repositories.PokemonDBRepository
 import com.technical.test.satoritech.utils.getIdPokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +32,10 @@ constructor(
 
     var pokemonList = mutableStateOf<PokemonList?>(null)
         private set
+
+    private var _pokemonDataList = MutableStateFlow<MutableList<PokemonData>>(mutableListOf())
+    val pokemonDataList: StateFlow<MutableList<PokemonData>>
+        get() = _pokemonDataList
 
     var pages = mutableStateOf(Pages("0", "25"))
         private set
@@ -55,6 +62,7 @@ constructor(
                         apiResponseStatus.data
                     )
                 )
+                getPokemonListDB()
             }
         }
         status.value = apiResponseStatus as ApiResponseStatus<Any>
@@ -69,17 +77,20 @@ constructor(
 
     private fun getPokemon(idPokemon: String) {
         viewModelScope.launch {
+            status.value = ApiResponseStatus.Loading()
             handlePokemonData(pokemonRepository.getPokemon(idPokemon))
         }
     }
 
-    fun getPokemonListDB() {
+    private fun getPokemonListDB(){
         viewModelScope.launch {
-            dataBaseRepository.getPokemonListDB()
-                .collect {
-                    it.forEach { pokemonDB ->
-
+           dataBaseRepository.getPokemonListDB()
+                .collect { pokemonDataDB ->
+                    val pokemonData = _pokemonDataList.value.toMutableList()
+                    pokemonDataDB.forEach {
+                        pokemonData.add(it.pokemon)
                     }
+                    _pokemonDataList.value = pokemonData
                 }
         }
     }

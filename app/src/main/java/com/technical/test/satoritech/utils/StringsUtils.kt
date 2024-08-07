@@ -7,6 +7,7 @@ fun String.getInitials(): String = this.split(' ')
 fun String.getIdPokemon(): String {
     return this.replace("[^0-9]".toRegex(), "").drop(1)
 }
+
 fun String.isLetters(): Boolean {
-    return this.replace(" ","").all { it.isLetter() }
+    return this.replace(" ", "").all { it.isLetter() }
 }

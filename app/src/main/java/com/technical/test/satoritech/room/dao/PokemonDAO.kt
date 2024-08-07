@@ -18,4 +18,7 @@ interface PokemonDAO {
 
     @Delete
     fun delete(pokemonEntityDB: PokemonEntityDB)
+
+    @Query("DELETE FROM Pokemon")
+    fun deleteAllTable()
 }

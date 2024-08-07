@@ -22,4 +22,10 @@ constructor(
             pokemonDAO.insertPokemon(pokemonEntityDB)
         }
     }
+
+    suspend fun deleteAllPokemon(){
+        withContext(Dispatchers.IO){
+            pokemonDAO.deleteAllTable()
+        }
+    }
 }

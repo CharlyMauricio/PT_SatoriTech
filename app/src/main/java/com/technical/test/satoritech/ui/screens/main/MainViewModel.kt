@@ -34,14 +34,19 @@ constructor(
     val pokemonDataList: StateFlow<MutableList<PokemonData>>
         get() = _pokemonDataList
 
-    var pages = mutableStateOf(Pages("0", "25"))
-        private set
-
     init {
+        //deleteAllPokemon()
         getPokemonListDB()
     }
 
     fun dataUser() = mutableStateOf(User("Carlos Mauricio", ""))
+
+    fun getPokemonList(pageContinue: String) {
+        viewModelScope.launch {
+            status.value = ApiResponseStatus.Loading()
+            handlePokemonList(pokemonRepository.getPokemonList(pageContinue))
+        }
+    }
 
     private fun handlePokemonList(apiResponseStatus: ApiResponseStatus<PokemonList>) {
         if (apiResponseStatus is ApiResponseStatus.Success) {
@@ -67,13 +72,6 @@ constructor(
         status.value = apiResponseStatus as ApiResponseStatus<Any>
     }
 
-    private fun getPokemonList(pages: Pages) {
-        viewModelScope.launch {
-            status.value = ApiResponseStatus.Loading()
-            handlePokemonList(pokemonRepository.getPokemonList(pages.pageInitial, pages.pageFinal))
-        }
-    }
-
     private fun getPokemon(idPokemon: String) {
         viewModelScope.launch {
             status.value = ApiResponseStatus.Loading()
@@ -83,7 +81,6 @@ constructor(
 
     private fun getPokemonListDB() {
         viewModelScope.launch {
-            status.value = ApiResponseStatus.Loading()
             dataBaseRepository.getPokemonListDB()
                 .collect { pokemonDataDB ->
                     if (pokemonDataDB.isNotEmpty()) {
@@ -92,11 +89,16 @@ constructor(
                             pokemonData.add(it.pokemon)
                         }
                         _pokemonDataList.value = pokemonData
-                        status.value = ApiResponseStatus.Success(pokemonData)
                     } else {
-                        getPokemonList(pages.value)
+                        getPokemonList("0")
                     }
                 }
+        }
+    }
+
+    private fun deleteAllPokemon() {
+        viewModelScope.launch {
+            dataBaseRepository.deleteAllPokemon()
         }
     }
 }

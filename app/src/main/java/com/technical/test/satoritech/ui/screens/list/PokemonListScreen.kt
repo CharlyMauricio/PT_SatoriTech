@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package com.technical.test.satoritech.ui.screens.list
 
 import androidx.compose.foundation.Image
@@ -12,9 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
@@ -23,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,8 +43,6 @@ import com.technical.test.satoritech.ui.utils.composable.TopBarNavigation
 import com.technical.test.satoritech.ui.utils.firstCharUpperCase
 import com.technical.test.satoritech.ui.utils.getInitials
 
-private const val GRID_SPAN_COUNT = 1
-
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
@@ -59,32 +55,44 @@ fun PokemonListScreen(
 ) {
     val status = viewModel.status.value
     val pokemonList = viewModel.pokemonDataList.collectAsState().value
-
+    var isLastItemPokemon = remember {
+        false
+    }
     Scaffold(
-        topBar = { ScreenTopBar(
-            user,
-            onBackClick,
-            onClickUserProfile
-        ) }
+        topBar = {
+            ScreenTopBar(
+                user,
+                onBackClick,
+                onClickUserProfile
+            )
+        }
     ) {
-        LazyVerticalGrid(
+        LazyColumn(
             contentPadding = it,
-            columns = GridCells.Fixed(GRID_SPAN_COUNT),
-            content = {
-                items(pokemonList){ pokemon ->
+        ) {
+            itemsIndexed(pokemonList) { index, pokemon ->
+                if ((index + 1) == pokemonList.size) {
+                    isLastItemPokemon = true
+                }
+                if (isLastItemPokemon) {
+                    val pageInitial = (index + 2).toString()
+                    //viewModel.getPokemonList(pageInitial)
+                } else {
                     PokemonGridItem(pokemon, onPokemonClicked)
                 }
-            },
-        )
+            }
+        }
     }
 
     when (status) {
         is ApiResponseStatus.Loading -> {
             LoadingScreen()
         }
+
         is ApiResponseStatus.Error -> {
             ErrorDialog(status.messageId) { }
         }
+
         else -> {}
     }
 }
@@ -96,11 +104,13 @@ fun ScreenTopBar(
     onClickUserProfile: () -> Unit,
 ) {
     TopAppBar(
-        title = { TopBarNavigation(
-            user,
-            onClick,
-            onClickUserProfile
-        ) },
+        title = {
+            TopBarNavigation(
+                user,
+                onClick,
+                onClickUserProfile
+            )
+        },
         backgroundColor = Color.White,
         contentColor = Color.Black
     )

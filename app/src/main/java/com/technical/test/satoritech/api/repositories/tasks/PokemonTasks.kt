@@ -6,7 +6,7 @@ import com.technical.test.satoritech.model.PokemonList
 
 interface PokemonTasks {
 
-    suspend fun getPokemonList(pageMin: String, pageMax: String): ApiResponseStatus<PokemonList>
+    suspend fun getPokemonList(pageContinue: String): ApiResponseStatus<PokemonList>
     suspend fun getPokemon(idPokemon: String): ApiResponseStatus<PokemonData>
 
 }

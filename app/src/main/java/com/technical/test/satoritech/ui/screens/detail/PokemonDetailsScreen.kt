@@ -3,6 +3,7 @@ package com.technical.test.satoritech.ui.screens.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,7 +58,7 @@ fun ScreenTopBar(
     onClick: () -> Unit,
 ) {
     TopAppBar(
-        title = { Text(stringResource(R.string.details_title, namePokemon.firstCharUpperCase())) },
+        title = { Text(stringResource(R.string.details_title_format, namePokemon.firstCharUpperCase())) },
         backgroundColor = Color.White,
         contentColor = Color.Black,
         navigationIcon = {
@@ -70,27 +71,43 @@ fun ScreenTopBar(
 
 @Composable
 fun PokemonItem(paddingValues: PaddingValues, pokemonData: PokemonData) {
-    Row(
+    Column(
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxWidth()
             .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = rememberAsyncImagePainter(pokemonData.sprite),
             contentDescription = null,
             modifier = Modifier
                 .background(Color.White)
-                .size(100.dp)
+                .size(200.dp)
                 .semantics { testTag = "pokemon-${pokemonData.namePokemon}" }
         )
         Text(
             text = pokemonData.namePokemon.firstCharUpperCase(),
             color = Color.Black,
             modifier = Modifier
-                .fillMaxSize()
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Black
+        )
+        Text(
+            text = stringResource(R.string.height_format, pokemonData.height),
+            color = Color.Black,
+            modifier = Modifier
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Black
+        )
+        Text(
+            text = stringResource(R.string.weight_format, pokemonData.weight),
+            color = Color.Black,
+            modifier = Modifier
                 .padding(16.dp),
             textAlign = TextAlign.Center,
             fontSize = 25.sp,

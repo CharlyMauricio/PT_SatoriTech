@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class PokemonTasksModule {
+abstract class PokemonModule {
     @Binds
     abstract fun bindPokemonTasks(
         pokemonRepository: PokemonRepository

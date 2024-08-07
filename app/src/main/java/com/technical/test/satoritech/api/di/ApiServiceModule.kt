@@ -1,8 +1,8 @@
 package com.technical.test.satoritech.api.di
 
 import com.technical.test.satoritech.api.ApiService
-import com.technical.test.satoritech.api.utils.BASE_URL
 import com.technical.test.satoritech.api.utils.ApiServiceInterceptor
+import com.technical.test.satoritech.api.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

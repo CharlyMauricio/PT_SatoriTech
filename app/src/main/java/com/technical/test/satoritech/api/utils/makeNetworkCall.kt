@@ -4,7 +4,6 @@ import com.technical.test.satoritech.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.lang.Exception
 import java.net.UnknownHostException
 
 private const val UNAUTHORIZED_ERROR_CODE = 401
@@ -24,10 +23,10 @@ suspend fun <T> makeNetworkCall(
         }
         ApiResponseStatus.Error(errorMessage)
     } catch (e: Exception) {
-        val errorMessage = when(e.message) {
+        val errorMessage = when (e.message) {
             "user_already_exists" -> R.string.user_already_exists
             else -> {
-                if (e.message!!.contains("Parameter specified as non-null is null")){
+                if (e.message!!.contains("Parameter specified as non-null is null")) {
                     R.string.parameter_non_null_is_null
                 } else {
                     R.string.unknown_error

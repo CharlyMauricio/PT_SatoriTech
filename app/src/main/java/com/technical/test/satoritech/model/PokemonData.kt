@@ -10,4 +10,4 @@ data class PokemonData(
     val height: Int,
     val weight: Int,
     val sprite: String,
-): Parcelable
+) : Parcelable

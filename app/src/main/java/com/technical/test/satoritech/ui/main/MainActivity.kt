@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.technical.test.satoritech.api.utils.ApiResponseStatus
 import com.technical.test.satoritech.model.User
 import com.technical.test.satoritech.ui.theme.SatoriTechTheme
 import com.technical.test.satoritech.ui.user.UserScreen
@@ -21,6 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setObserver()
+
 
         setContent {
             SatoriTechTheme {
@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
                         ),
                         onClickProfile = {
                             println("Si paso el click")
+                            viewModel.getPokemonListDB()
                         }
                     )
                 }

@@ -9,4 +9,4 @@ data class PokemonDataList(
     val nextPage: String,
     val previousPage: String?,
     val listPokemon: List<Pokemon>
-): Parcelable
+) : Parcelable

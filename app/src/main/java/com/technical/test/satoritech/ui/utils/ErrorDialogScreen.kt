@@ -36,7 +36,7 @@ fun ErrorDialog(
 
 @Composable
 @Preview(showBackground = true)
-private fun ErrorDialogPreview(){
+private fun ErrorDialogPreview() {
     ErrorDialog(
         R.string.error_generico,
         onDialogDismiss = {}

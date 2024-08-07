@@ -10,6 +10,6 @@ data class PokemonDataResponse(
     @field:Json(name = "sprites") val sprite: Sprites,
 )
 
-data class Sprites (
+data class Sprites(
     @field:Json(name = "front_default") var spriteDefault: String
 )

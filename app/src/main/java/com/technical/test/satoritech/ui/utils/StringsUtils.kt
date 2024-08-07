@@ -1,4 +1,4 @@
-package com.technical.test.satoritech.utils
+package com.technical.test.satoritech.ui.utils
 
 fun String.getInitials(): String = this.split(' ')
     .mapNotNull { it.firstOrNull()?.toString() }
@@ -11,3 +11,5 @@ fun String.getIdPokemon(): String {
 fun String.isLetters(): Boolean {
     return this.replace(" ", "").all { it.isLetter() }
 }
+
+fun String.firstCharUpperCase() = replaceFirstChar(Char::titlecase)

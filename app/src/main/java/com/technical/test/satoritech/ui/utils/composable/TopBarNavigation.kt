@@ -1,4 +1,4 @@
-package com.technical.test.satoritech.ui.utils
+package com.technical.test.satoritech.ui.utils.composable
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.technical.test.satoritech.R
 import com.technical.test.satoritech.model.User
-import com.technical.test.satoritech.ui.profile.UserScreen
+import com.technical.test.satoritech.ui.screens.profile.UserScreen
+import com.technical.test.satoritech.ui.utils.composable.BackNavigationIcon
 
 @Composable
 fun TopBarNavigation(

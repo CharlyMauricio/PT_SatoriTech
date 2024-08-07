@@ -1,4 +1,4 @@
-package com.technical.test.satoritech.ui.main
+package com.technical.test.satoritech.ui.screens.main
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.technical.test.satoritech.api.repositories.tasks.PokemonTasks
 import com.technical.test.satoritech.api.utils.ApiResponseStatus
 import com.technical.test.satoritech.model.Pages
-import com.technical.test.satoritech.model.Pokemon
 import com.technical.test.satoritech.model.PokemonData
 import com.technical.test.satoritech.model.PokemonList
+import com.technical.test.satoritech.model.User
 import com.technical.test.satoritech.room.entity.PokemonEntityDB
 import com.technical.test.satoritech.room.repositories.PokemonDBRepository
-import com.technical.test.satoritech.utils.getIdPokemon
+import com.technical.test.satoritech.ui.utils.getIdPokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,9 +30,6 @@ constructor(
     var status = mutableStateOf<ApiResponseStatus<Any>?>(null)
         private set
 
-    var pokemonList = mutableStateOf<PokemonList?>(null)
-        private set
-
     private var _pokemonDataList = MutableStateFlow<MutableList<PokemonData>>(mutableListOf())
     val pokemonDataList: StateFlow<MutableList<PokemonData>>
         get() = _pokemonDataList
@@ -43,6 +40,8 @@ constructor(
     init {
         getPokemonListDB()
     }
+
+    fun dataUser() = mutableStateOf(User("Carlos Mauricio", ""))
 
     private fun handlePokemonList(apiResponseStatus: ApiResponseStatus<PokemonList>) {
         if (apiResponseStatus is ApiResponseStatus.Success) {
@@ -82,12 +81,12 @@ constructor(
         }
     }
 
-    private fun getPokemonListDB(){
+    private fun getPokemonListDB() {
         viewModelScope.launch {
             status.value = ApiResponseStatus.Loading()
-           dataBaseRepository.getPokemonListDB()
+            dataBaseRepository.getPokemonListDB()
                 .collect { pokemonDataDB ->
-                    if (pokemonDataDB.isNotEmpty()){
+                    if (pokemonDataDB.isNotEmpty()) {
                         val pokemonData = _pokemonDataList.value.toMutableList()
                         pokemonDataDB.forEach {
                             pokemonData.add(it.pokemon)

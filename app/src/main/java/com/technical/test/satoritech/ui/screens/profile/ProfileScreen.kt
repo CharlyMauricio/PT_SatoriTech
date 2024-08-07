@@ -1,4 +1,4 @@
-package com.technical.test.satoritech.ui.profile
+package com.technical.test.satoritech.ui.screens.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -25,8 +25,8 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.technical.test.satoritech.R
 import com.technical.test.satoritech.model.User
-import com.technical.test.satoritech.utils.getInitials
-import com.technical.test.satoritech.utils.isLetters
+import com.technical.test.satoritech.ui.utils.getInitials
+import com.technical.test.satoritech.ui.utils.isLetters
 
 @Composable
 fun UserScreen(

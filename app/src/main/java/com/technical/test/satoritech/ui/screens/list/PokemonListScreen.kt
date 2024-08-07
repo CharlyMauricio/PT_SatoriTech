@@ -1,13 +1,13 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.technical.test.satoritech.ui.main
+package com.technical.test.satoritech.ui.screens.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
@@ -37,10 +38,12 @@ import coil.compose.rememberAsyncImagePainter
 import com.technical.test.satoritech.api.utils.ApiResponseStatus
 import com.technical.test.satoritech.model.PokemonData
 import com.technical.test.satoritech.model.User
-import com.technical.test.satoritech.ui.utils.ErrorDialog
-import com.technical.test.satoritech.ui.utils.LoadingScreen
-import com.technical.test.satoritech.ui.utils.TopBarNavigation
-import com.technical.test.satoritech.utils.getInitials
+import com.technical.test.satoritech.ui.screens.main.MainViewModel
+import com.technical.test.satoritech.ui.utils.composable.ErrorDialog
+import com.technical.test.satoritech.ui.utils.composable.LoadingScreen
+import com.technical.test.satoritech.ui.utils.composable.TopBarNavigation
+import com.technical.test.satoritech.ui.utils.firstCharUpperCase
+import com.technical.test.satoritech.ui.utils.getInitials
 
 private const val GRID_SPAN_COUNT = 1
 
@@ -126,13 +129,14 @@ fun PokemonGridItem(pokemonData: PokemonData, onPokemonClicked: (PokemonData) ->
             )
         }
     } else {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(8.dp)
-                .height(100.dp)
-                .width(100.dp)
-                .clickable { onPokemonClicked(pokemonData) },
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth()
+                .padding(10.dp)
+                .clickable {
+                    onPokemonClicked(pokemonData)
+                },
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = rememberAsyncImagePainter(pokemonData.sprite),
@@ -143,7 +147,7 @@ fun PokemonGridItem(pokemonData: PokemonData, onPokemonClicked: (PokemonData) ->
                     .semantics { testTag = "pokemon-${pokemonData.namePokemon}" }
             )
             Text(
-                text = pokemonData.namePokemon,
+                text = pokemonData.namePokemon.firstCharUpperCase(),
                 color = Color.Black,
                 modifier = Modifier
                     .fillMaxSize()

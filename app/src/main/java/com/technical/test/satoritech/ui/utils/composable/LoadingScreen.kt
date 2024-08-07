@@ -1,4 +1,4 @@
-package com.technical.test.satoritech.ui.utils
+package com.technical.test.satoritech.ui.utils.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

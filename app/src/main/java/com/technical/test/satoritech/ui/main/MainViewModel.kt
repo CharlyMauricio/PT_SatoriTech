@@ -41,7 +41,7 @@ constructor(
         private set
 
     init {
-        getPokemonList(pages.value)
+        getPokemonListDB()
     }
 
     private fun handlePokemonList(apiResponseStatus: ApiResponseStatus<PokemonList>) {
@@ -84,13 +84,19 @@ constructor(
 
     private fun getPokemonListDB(){
         viewModelScope.launch {
+            status.value = ApiResponseStatus.Loading()
            dataBaseRepository.getPokemonListDB()
                 .collect { pokemonDataDB ->
-                    val pokemonData = _pokemonDataList.value.toMutableList()
-                    pokemonDataDB.forEach {
-                        pokemonData.add(it.pokemon)
+                    if (pokemonDataDB.isNotEmpty()){
+                        val pokemonData = _pokemonDataList.value.toMutableList()
+                        pokemonDataDB.forEach {
+                            pokemonData.add(it.pokemon)
+                        }
+                        _pokemonDataList.value = pokemonData
+                        status.value = ApiResponseStatus.Success(pokemonData)
+                    } else {
+                        getPokemonList(pages.value)
                     }
-                    _pokemonDataList.value = pokemonData
                 }
         }
     }

@@ -130,7 +130,7 @@ fun PokemonGridItem(pokemonData: PokemonData, onPokemonClicked: (PokemonData) ->
                 contentDescription = null,
                 modifier = Modifier
                     .background(Color.White)
-                    .size(25.dp)
+                    .size(100.dp)
                     .semantics { testTag = "pokemon-${pokemonData.namePokemon}" }
             )
             Text(
